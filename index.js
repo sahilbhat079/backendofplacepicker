@@ -1,7 +1,14 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import { fileURLToPath } from 'node:url';
 import fs from 'fs/promises';
+import path from 'path'; // Import the path module
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// Construct absolute paths to your data files
+const placesFilePath = path.join(__dirname, 'data', 'places.json');
+const userPlacesFilePath = path.join(__dirname, 'data', 'user-places.json');
 
 const app = express();
 const PORT = 3000;
@@ -28,7 +35,7 @@ app.get('/', (req, res) => {
 // Example places route
 app.get('/places', async (req, res) => {
   try {
-    const fileContent = await fs.readFile('./data/places.json');
+    const fileContent = await fs.readFile(placesFilePath);
     const placesData = JSON.parse(fileContent);
     res.status(200).json({ places: placesData });
   } catch (error) {
@@ -39,7 +46,7 @@ app.get('/places', async (req, res) => {
 // Example user-places route
 app.get('/user-places', async (req, res) => {
   try {
-    const fileContent = await fs.readFile('./data/user-places.json');
+    const fileContent = await fs.readFile(userPlacesFilePath);
     const userPlaces = JSON.parse(fileContent);
     res.status(200).json({ places: userPlaces });
   } catch (error) {
@@ -50,7 +57,7 @@ app.get('/user-places', async (req, res) => {
 app.put('/user-places', async (req, res) => {
   try {
     const places = req.body.places;
-    await fs.writeFile('./data/user-places.json', JSON.stringify(places));
+    await fs.writeFile(userPlacesFilePath, JSON.stringify(places));
     res.status(200).json({ message: 'User places updated!' });
   } catch (error) {
     res.status(500).json({ error: error.message });

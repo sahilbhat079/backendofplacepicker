@@ -2,7 +2,7 @@
     "version": 2,
     "routes": [
       { "src": "/places", "dest": "/index.js" },
-      { "src": "/user-places", "dest": "/index.js" },
-      { "src": "/user-places", "methods": ["PUT"], "dest": "/index.js" }
+      { "src": "/user-places", "methods": ["GET", "PUT"], "dest": "/index.js" },
+      { "src": "^/$", "dest": "/index.js" }
     ]
   }
